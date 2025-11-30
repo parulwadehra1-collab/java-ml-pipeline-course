@@ -1,13 +1,14 @@
-FROM eclipse-temurin:17
+# Use a base image that already includes Maven + Temurin JDK 17
+FROM maven:3.9-eclipse-temurin-17
 
-# Create working directory inside the container
 WORKDIR /app
 
-# Copy everything from your repo into /app
-COPY . .
-
-# (Optional but recommended) Download dependencies first to reuse cache
+# Copy pom.xml first and download dependencies (better caching)
+COPY pom.xml .
 RUN mvn -q -B dependency:go-offline
 
-# Run tests when the container is built
+# Now copy the rest of the project
+COPY . .
+
+# Run tests
 RUN mvn -q -e -B test
