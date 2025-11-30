@@ -33,3 +33,20 @@ jobs:
           name: test-results
           path: target/surefire-reports/
 
+      - name: Run Tests with Coverage
+        run: mvn clean test jacoco:report
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+
+      - name: Build Docker Image
+        run: docker build -t ml-test-env .
+
+      - name: Run Tests in Container
+        run: docker run ml-test-env
+
+
+
