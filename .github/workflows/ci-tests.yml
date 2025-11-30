@@ -45,5 +45,8 @@ jobs:
       - name: Run Tests in Container
         run: docker run ml-test-env
 
+      - name: Repeated Test Runs
+        run: for i in {1..10}; do mvn -q test; done
+
 
 
